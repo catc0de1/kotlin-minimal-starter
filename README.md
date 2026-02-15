@@ -96,6 +96,20 @@ Read more environment setup for Linux Mint in my blog [here](https://zblogzone.n
 
     Which is USERNAME base on OS username. Each OS have different configuration.
 
+6. **Setting `gradle.properties`**
+
+    Make `gradle.properties` like `gradle.properties.example` for example:
+
+    ```ini
+    org.gradle.jvmargs=-Xmx2g
+    android.useAndroidX=true
+    kotlin.code.style=official
+
+    # SECRET
+    KEYSTORE_PASSWORD=xxx
+    KEY_PASSWORD=xxx
+    ```
+
 ## Device Setup
 
 On your Android phone:
@@ -139,26 +153,47 @@ app/build/outputs/apk/debug/app-debug.apk
 ./gradlew installDebug
 ```
 
+or
+
+```adb
+adb install app/build/outputs/apk/debug/app-debug.apk
+```
+
+If want continuous development
+
+```bash
+./gradlew installDebug --continuous
+```
+
 ### Launch App
 
 ```adb
 adb shell monkey -p your.package.name -c android.intent.category.LAUNCHER 1
 ```
 
----
+### Uninstall App
+
+```adb
+adb uninstall com.YOUR_DOMAIN.APP
+```
 
 ## Debugging
 
 View logs:
 
-```bash
+```adb
 adb logcat
 ```
 
 Filtered:
 
-```bash
-adb logcat | grep YourTag
+```adb
+adb logcat | grep AndroidRuntime
+```
+
+Clean log:
+```adb
+adb logcat -c
 ```
 
 ---
@@ -181,7 +216,7 @@ adb logcat | grep YourTag
 |----------|---------------------------------|
 |Linux Mint|Primary supported                |
 |Ubuntu    |Same as Mint                     |
-|Arch	     |Manual JDK & SDK paths           |
+|Arch	   |Supported, Manual JDK & SDK paths|
 |macOS     |Replace paths & use Homebrew     |
 |Windows   |Requires WSL or manual SDK config|
 
